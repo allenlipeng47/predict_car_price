@@ -26,7 +26,7 @@ It reads data from `./[MODEL_NAME]/data.csv`, builds the model, and stores the g
 python generate_model.py
 ```
 
-## Step3: predict.py
+## Step 4: predict.py
 In the `predict.py` file, update the `ODOMETER`, `YEAR_MAKE`. Run and get the predicted result:
 ```commandline
 python predict.py
