@@ -3,8 +3,18 @@ from bs4 import BeautifulSoup
 import re
 import csv
 import pandas as pd
+import os
+import sys
+import configparser
 
-CURRENT_YEAR = 2023
+config = configparser.ConfigParser()
+config.read('./CONFIG')
+
+MODEL_NAME = config['DEFAULT']['MODEL_NAME']
+CURRENT_YEAR = int(config['DEFAULT']['CURRENT_YEAR'])
+
+print(f"MODEL_NAME: {MODEL_NAME}")
+print(f"CURRENT_YEAR: {CURRENT_YEAR}")
 
 def crawl_url(url):
     response = requests.get(url)
@@ -17,7 +27,6 @@ def crawl_url(url):
         year_match = year_pattern.search(title_span.text)
         year = year_match.group(0) if year_match else None
         year = int(year)
-        year = CURRENT_YEAR - year
 
         # Extract the price
         price_span = soup.find('span', class_='price')
@@ -47,22 +56,30 @@ def crawl_url(url):
 
 
 if __name__ == '__main__':
-    import sys
     if len(sys.argv) == 2:
         url = sys.argv[1]
         car_info = crawl_url(url)
 
         print(car_info)
 
+        file_data = "./%s/data.csv" % MODEL_NAME
+
+        if not os.path.exists(MODEL_NAME):
+            os.makedirs(MODEL_NAME)
+
+        if not os.path.exists(file_data):
+            with open(file_data, "w") as f:
+                f.write("year,odometer,price,url\n")
+
         # Append car information to CSV file
-        with open('odyssey_year_odometer_price.csv', 'a', newline='') as csvfile:
+        with open(file_data, 'a', newline='') as csvfile:
             writer = csv.DictWriter(csvfile, fieldnames=['year', 'odometer', 'price', 'url'])
             writer.writerow(car_info)
 
         # Alternative approach using pandas
-        df = pd.read_csv('odyssey_year_odometer_price.csv')
+        df = pd.read_csv(file_data)
         df = df.append(car_info, ignore_index=True)
-        df.to_csv('odyssey_year_odometer_price.csv', index=False)
+        df.to_csv(file_data, index=False)
 
     else:
         print('Usage: python crawl_url.py <url>')

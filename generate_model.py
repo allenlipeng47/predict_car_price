@@ -3,11 +3,21 @@ from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_absolute_error
 import pickle
+import configparser
+
+config = configparser.ConfigParser()
+config.read('./CONFIG')
+
+MODEL_NAME = config['DEFAULT']['MODEL_NAME']
+CURRENT_YEAR = int(config['DEFAULT']['CURRENT_YEAR'])
+
+file_data = "./%s/data.csv" % MODEL_NAME
+file_model = "./%s/model.pkl" % MODEL_NAME
 
 # Read the Excel data into a pandas DataFrame
-data = pd.read_csv('./odyssey_year_odometer_price.csv')
+data = pd.read_csv(file_data)
 
-data['age'] = 2023 - data['year']
+data['age'] = CURRENT_YEAR - data['year']
 model = LinearRegression()
 
 X = data[['odometer', 'age']]  # Features
@@ -23,6 +33,7 @@ y_pred = model.predict(X_test)
 # Calculate the Mean Absolute Error (MAE)
 MAE = mean_absolute_error(y_test, y_pred)
 print("MAE:", MAE)
+print("Model created at %s" % file_model)
 
-with open('odyssey_year_odometer_price.pkl', 'wb') as f:
+with open(file_model, 'wb') as f:
     pickle.dump(model, f)

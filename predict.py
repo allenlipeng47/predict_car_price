@@ -1,19 +1,27 @@
 import pandas as pd
-from sklearn.linear_model import LinearRegression
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import mean_absolute_error
 import pickle
+import configparser
 
-with open('odyssey_year_odometer_price.pkl', 'rb') as f:
-    model = pickle.load(f)
+# update the variable here
+ODOMETER = 98
+YEAR_MAKE = 2017
 
-new_odometer = 74
-new_year = 2023 - 2012
+# read config
+config = configparser.ConfigParser()
+config.read('./CONFIG')
+
+MODEL_NAME = config['DEFAULT']['MODEL_NAME']
+CURRENT_YEAR = int(config['DEFAULT']['CURRENT_YEAR'])
 
 new_data = pd.DataFrame({
-    'odometer': [new_odometer],
-    'age': [new_year]
+    'odometer': [ODOMETER],
+    'age': [CURRENT_YEAR - YEAR_MAKE]
 })
+
+file_model = "./%s/model.pkl" % MODEL_NAME
+
+with open(file_model, 'rb') as f:
+    model = pickle.load(f)
 
 # Make predictions for the new car
 new_price = model.predict(new_data[['odometer', 'age']])
