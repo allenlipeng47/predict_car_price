@@ -3,8 +3,8 @@ import pickle
 import configparser
 
 # update the variable here
-ODOMETER = 98
-YEAR_MAKE = 2017
+ODOMETER = 113
+YEAR_MAKE = 2015
 
 # read config
 config = configparser.ConfigParser()

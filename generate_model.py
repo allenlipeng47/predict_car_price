@@ -33,7 +33,7 @@ y_pred = model.predict(X_test)
 # Calculate the Mean Absolute Error (MAE)
 MAE = mean_absolute_error(y_test, y_pred)
 print("MAE:", MAE)
-print("Model created at %s" % file_model)
+print("Model created at '%s'" % file_model)
 
 with open(file_model, 'wb') as f:
     pickle.dump(model, f)
