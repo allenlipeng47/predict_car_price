@@ -8,11 +8,11 @@ with open('odyssey_year_odometer_price.pkl', 'rb') as f:
     model = pickle.load(f)
 
 new_odometer = 74
-new_age = 2023 - 2012
+new_year = 2023 - 2012
 
 new_data = pd.DataFrame({
     'odometer': [new_odometer],
-    'age': [new_age]
+    'age': [new_year]
 })
 
 # Make predictions for the new car
