@@ -1,5 +1,5 @@
 # Predict Car Price
-This is simple car price prediction model. It uses linear regression. It takes year, odometer as variants, price as the prediction result. Built a crawler to crawl craiglist price.
+This is simple car price prediction model. It uses linear regression. It takes `year`, `odometer` as variants, `price` as the prediction result. Built a crawler to crawl craiglist price.
 
 This is built with python 3.1.0.
 
